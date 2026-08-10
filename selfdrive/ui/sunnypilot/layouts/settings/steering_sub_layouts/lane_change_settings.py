@@ -9,7 +9,7 @@ import pyray as rl
 
 from openpilot.selfdrive.ui.ui_state import ui_state
 from openpilot.system.ui.lib.multilang import tr
-from openpilot.system.ui.sunnypilot.widgets.list_view import toggle_item_sp, option_item_sp, LineSeparatorSP
+from openpilot.system.ui.sunnypilot.widgets.list_view import toggle_item_sp, option_item_sp, multiple_button_item_sp, LineSeparatorSP
 from openpilot.system.ui.widgets.network import NavButton
 from openpilot.system.ui.widgets.scroller_tici import Scroller
 from openpilot.system.ui.widgets import Widget
@@ -51,11 +51,23 @@ class LaneChangeSettingsLayout(Widget):
       description=lambda: tr("Toggle to enable a delay timer for seamless lane changes when blind spot monitoring " +
                              "(BSM) detects a obstructing vehicle, ensuring safe maneuvering."),
     )
+    self._smoothness = multiple_button_item_sp(
+      param="LaneChangeSmoothness",
+      title=lambda: tr("Lane Change Smoothness"),
+      description=lambda: tr("Softens the start of a lane change by easing the lateral jerk rate cap. " +
+                             "Default matches the validated profile (gentle S-curve initiation over ~8 s). " +
+                             "Light is closer to stock; Strong is gentler still. Accel limits are unchanged."),
+      buttons=[lambda: tr("Off"), lambda: tr("Light"), lambda: tr("Default"), lambda: tr("Strong")],
+      inline=False,
+      button_width=220,
+    )
 
     items = [
       self._lane_change_timer,
       LineSeparatorSP(40),
       self._bsm_delay,
+      LineSeparatorSP(40),
+      self._smoothness,
     ]
 
     return items

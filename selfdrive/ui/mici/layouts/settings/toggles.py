@@ -14,6 +14,8 @@ class TogglesLayoutMici(NavScroller):
     super().__init__()
 
     self._personality_toggle = BigMultiParamToggle("driving personality", "LongitudinalPersonality", ["aggressive", "standard", "relaxed"])
+    self._lc_smooth_toggle = BigMultiParamToggle("lane change smoothness", "LaneChangeSmoothness",
+                                                 ["off", "light", "default", "strong"])
     self._experimental_btn = BigParamControl("experimental mode", "ExperimentalMode")
     is_metric_toggle = BigParamControl("use metric units", "IsMetric")
     ldw_toggle = BigParamControl("lane departure warnings", "IsLdwEnabled")
@@ -24,6 +26,7 @@ class TogglesLayoutMici(NavScroller):
 
     self._scroller.add_widgets([
       self._personality_toggle,
+      self._lc_smooth_toggle,
       self._experimental_btn,
       is_metric_toggle,
       ldw_toggle,

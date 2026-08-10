@@ -139,6 +139,9 @@ class Controls(ControlsExt):
       new_desired_curvature = self.sm['lateralManeuverPlan'].desiredCurvature if CC.latActive else self.curvature
     else:
       new_desired_curvature = model_v2.action.desiredCurvature if CC.latActive else self.curvature
+    # Soften lane-change initiation jerk before the stock ISO clip_curvature ceiling
+    new_desired_curvature = self.lane_change_smoothness.update(
+      new_desired_curvature, self.desired_curvature, CS.vEgo, CC.latActive, model_v2.meta.laneChangeState)
     self.desired_curvature, curvature_limited = clip_curvature(CS.vEgo, self.desired_curvature, new_desired_curvature, lp.roll)
     lat_delay = self.sm["liveDelay"].lateralDelay + LAT_SMOOTH_SECONDS
 
